@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Text;
 
 namespace ConsoleImplementation.Helpers
@@ -8,29 +7,17 @@ namespace ConsoleImplementation.Helpers
     {
         #region WriteLine methods
         /// <summary>
-        /// Writes text into the console with a specific color.
-        /// </summary>
-        /// <param name="text"></param>
-        /// <param name="fontColor"></param>
-        public static void WriteLine(string text, ConsoleColor fontColor)
-            => WriteLine(text, fontColor, Console.CursorLeft, Console.CursorTop);
-        /// <summary>
         /// Writes text into the console on a specific position with a specific color.
         /// </summary>
         /// <param name="text">Text to display</param>
         /// <param name="fontColor">Color of the text</param>
         /// <param name="cursorLeft">Starting CursorLeft position</param>
         /// <param name="cursorTop">Starting CursorTop position</param>
-        public static void WriteLine(string text, ConsoleColor fontColor, int cursorLeft, int cursorTop)
+        public static void WriteLine(string text, ConsoleColor fontColor)
         {
             ConsoleColor previousColor = Console.ForegroundColor;
-            (int, int) previousCursorPosition = (Console.CursorLeft, Console.CursorTop);
-
             Console.ForegroundColor = fontColor;
-            Console.SetCursorPosition(cursorLeft, cursorTop);
-
             Console.WriteLine(text);
-
             Console.ForegroundColor = previousColor;
         }
         #endregion
@@ -100,6 +87,46 @@ namespace ConsoleImplementation.Helpers
             Console.WriteLine(textToDisplay.ToString());
 
             Console.ForegroundColor = previousColor;
+        }
+
+        #endregion
+        #region MakeEdges methods
+
+        public static void MakeEdges(string text) => MakeEdges(text, Console.ForegroundColor);
+        /// <summary>
+        /// Writes text into the edges of the console and jumps to the next line.
+        /// </summary>
+        /// <param name="text"></param>
+        /// <param name="fontColor"></param>
+        /// <exception cref="ArgumentOutOfRangeException"></exception>
+        public static void MakeEdges(string text, ConsoleColor fontColor)
+        {
+            ConsoleColor previousColor = Console.ForegroundColor;
+
+            if (text.Length * 2 > Console.WindowWidth)
+                throw new ArgumentOutOfRangeException("text", "Text is too large to fit inside the line.");
+
+            Console.ForegroundColor = fontColor;
+            Console.SetCursorPosition(0, Console.CursorTop);
+            Console.Write(text);
+
+            Console.SetCursorPosition(Console.WindowWidth - text.Length, Console.CursorTop);
+
+            Console.WriteLine(text);
+            Console.ForegroundColor = previousColor;
+        }
+
+        #endregion
+        #region MakeFrame methods
+
+        public static void MakeFrame(char leftRightEdge, char topBottomEdge)
+        {
+            FillALine(topBottomEdge.ToString());
+            for(int i = 1; i < Console.WindowHeight - 2; i++)
+            {
+                MakeEdges(leftRightEdge.ToString());
+            }
+            FillALine(topBottomEdge.ToString());
         }
 
         #endregion
