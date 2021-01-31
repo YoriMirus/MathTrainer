@@ -9,7 +9,6 @@ namespace ConsoleImplementation
     {
         static void Main(string[] args)
         {
-            ConsoleHelper.SetWindowSize(40, 20);
             new MainMenu();
             Console.ReadLine();
         }
