@@ -1,6 +1,7 @@
 ﻿using System;
 
 using ConsoleImplementation.Helpers;
+using ConsoleImplementation.Models;
 
 namespace ConsoleImplementation
 {
@@ -8,11 +9,8 @@ namespace ConsoleImplementation
     {
         static void Main(string[] args)
         {
-
-            Console.SetWindowSize(10, 10);
-            Console.SetBufferSize(40, 30);
-            Console.SetWindowSize(40, 30);
-            ConsoleHelper.MakeFrame('|', '=');
+            ConsoleHelper.SetWindowSize(40, 20);
+            new MainMenu();
             Console.ReadLine();
         }
     }

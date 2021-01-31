@@ -55,37 +55,46 @@ namespace ConsoleImplementation.Helpers
 
         #endregion
         #region FillALine methods
-        public static void FillALine(string text) => FillALine(text, Console.ForegroundColor, Console.CursorTop);
+
+        public static void FillALine(string text) => FillALine(text, Console.ForegroundColor, 0, 0);
         /// <summary>
-        /// Completely fills one line with text.
+        /// Fills one line with text.
         /// </summary>
         /// <param name="text"></param>
         /// <param name="fontColor"></param>
-        public static void FillALine(string text, ConsoleColor fontColor)
-            => FillALine(text, fontColor, Console.CursorTop);
+        public static void FillALine(string text, ConsoleColor fontColor) => FillALine(text, fontColor, 0, 0);
         /// <summary>
-        /// Completely fills one line with text.
+        /// Fills one line with text.
         /// </summary>
         /// <param name="text"></param>
         /// <param name="fontColor"></param>
-        /// <param name="cursorTop"></param>
-        public static void FillALine(string text, ConsoleColor fontColor, int cursorTop)
+        /// <param name="margin">How many spaces to leave out on the right and left side of the line</param>
+        public static void FillALine(string text, ConsoleColor fontColor, int margin)
+            => FillALine(text, fontColor, margin, margin);
+        /// <summary>
+        /// Fills one line with text.
+        /// </summary>
+        /// <param name="text"></param>
+        /// <param name="fontColor"></param>
+        /// <param name="leftMargin">How many spaces to leave on the left side of the line.</param>
+        /// <param name="rightMargin">How many spaces to leave on the right side of the line.</param>
+        public static void FillALine(string text, ConsoleColor fontColor, int leftMargin, int rightMargin)
         {
             ConsoleColor previousColor = Console.ForegroundColor;
             StringBuilder textToDisplay = new StringBuilder();
 
-            //Add +1 to the condition field in case Console.WindowWidth % text.Length > 0
-            for(int i = 0; i < (Console.WindowWidth / text.Length) + 1; i++)
+            int appendCount = (Console.WindowWidth - leftMargin - rightMargin) / text.Length;
+
+            //Add +1 to the condition field in case (Console.WindowWidth - leftMargin - rightMargin) % text.Length > 0
+            for (int i = 0; i < appendCount + 1; i++)
             {
                 textToDisplay.Append(text);
             }
-            textToDisplay.Remove(Console.WindowWidth - 1, text.Length);
+            textToDisplay.Remove(Console.WindowWidth - leftMargin - rightMargin - 1, text.Length);
 
+            Console.SetCursorPosition(leftMargin, Console.CursorTop);
             Console.ForegroundColor = fontColor;
-            Console.SetCursorPosition(0, cursorTop);
-
             Console.WriteLine(textToDisplay.ToString());
-
             Console.ForegroundColor = previousColor;
         }
 
@@ -116,19 +125,64 @@ namespace ConsoleImplementation.Helpers
             Console.ForegroundColor = previousColor;
         }
 
+
+
         #endregion
         #region MakeFrame methods
 
-        public static void MakeFrame(char leftRightEdge, char topBottomEdge)
+        /// <summary>
+        /// Fills the edges of the window with a specific character. Used for making menus.
+        /// </summary>
+        /// <param name="leftRightEdge"></param>
+        /// <param name="topBottomEdge"></param>
+        public static void MakeFrame(char leftRightEdge, char topBottomEdge) => MakeFrame(leftRightEdge, topBottomEdge, Console.ForegroundColor);
+        /// <summary>
+        /// Fills the edges of the window with a specific character. Used for making menus.
+        /// </summary>
+        /// <param name="leftRightEdge"></param>
+        /// <param name="topBottomEdge"></param>
+        /// <param name="frameColor"></param>
+        public static void MakeFrame(char leftRightEdge, char topBottomEdge, ConsoleColor frameColor)
         {
+            ConsoleColor previousColor = Console.ForegroundColor;
+            Console.ForegroundColor = frameColor;
+
             FillALine(topBottomEdge.ToString());
             for(int i = 1; i < Console.WindowHeight - 2; i++)
             {
                 MakeEdges(leftRightEdge.ToString());
             }
             FillALine(topBottomEdge.ToString());
+
+            Console.ForegroundColor = previousColor;
         }
 
         #endregion
+
+        /// <summary>
+        /// Sets the window size of the console. Along with this, also shrinks/expands the buffer to perfectly fit the window.
+        /// </summary>
+        /// <param name="width"></param>
+        /// <param name="height"></param>
+        /// <exception cref="ArgumentOutOfRangeException"></exception>
+        public static void SetWindowSize(int width, int height)
+        {
+            Console.SetWindowSize(1, 1);
+            Console.SetBufferSize(width, height);
+            Console.SetWindowSize(width, height);
+        }
+        /// <summary>
+        /// Clears the console and fills the buffer with ' ' so that resizing doesn't completely break the menu.
+        /// </summary>
+        public static void Clear()
+        {
+            Console.Clear();
+            StringBuilder spaces = new StringBuilder();
+            for (int i = 0; i < Console.WindowWidth; i++)
+                spaces.Append(' ');
+
+            for(int i = 0; i < Console.WindowHeight; i++)
+                Console.Write(spaces.ToString() + "\n");
+        }
     }
 }
