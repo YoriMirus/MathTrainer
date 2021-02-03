@@ -10,7 +10,6 @@ namespace ConsoleImplementation
         static void Main(string[] args)
         {
             new MainMenu();
-            Console.ReadLine();
         }
     }
 }

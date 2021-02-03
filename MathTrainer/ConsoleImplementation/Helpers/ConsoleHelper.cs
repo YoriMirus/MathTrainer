@@ -158,31 +158,5 @@ namespace ConsoleImplementation.Helpers
         }
 
         #endregion
-
-        /// <summary>
-        /// Sets the window size of the console. Along with this, also shrinks/expands the buffer to perfectly fit the window.
-        /// </summary>
-        /// <param name="width"></param>
-        /// <param name="height"></param>
-        /// <exception cref="ArgumentOutOfRangeException"></exception>
-        public static void SetWindowSize(int width, int height)
-        {
-            Console.SetWindowSize(1, 1);
-            Console.SetBufferSize(width, height);
-            Console.SetWindowSize(width, height);
-        }
-        /// <summary>
-        /// Clears the console and fills the buffer with ' ' so that resizing doesn't completely break the menu.
-        /// </summary>
-        public static void Clear()
-        {
-            Console.Clear();
-            StringBuilder spaces = new StringBuilder();
-            for (int i = 0; i < Console.WindowWidth; i++)
-                spaces.Append(' ');
-
-            for(int i = 0; i < Console.WindowHeight; i++)
-                Console.Write(spaces.ToString() + "\n");
-        }
     }
 }
