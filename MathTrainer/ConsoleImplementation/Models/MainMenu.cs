@@ -8,26 +8,24 @@ using ConsoleImplementation.Enums;
 
 namespace ConsoleImplementation.Models
 {
-    class MainMenu
+    class MainMenu: MenuBase
     {
-        public MainMenuSection CurrentSection { get; private set; }
-        public ConsoleCursor MainMenuCursor { get; private set; }
-        private List<MenuOption> menuOptions;
         /// <summary>
         /// Whether to completely redisplay the menu.
         /// </summary>
-        private bool reDisplay;
-        private bool shutDown;
 
         public MainMenu()
         {
-            Console.SetWindowSize(40, 20);
-            CurrentSection = MainMenuSection.MainMenu;
-            reDisplay = true;
-            shutDown = false;
+            WindowWidth = 40;
+            WindowHeight = 20;
+            Console.SetWindowSize(WindowWidth, WindowHeight);
+
+            redisplayMenu = true;
+            shutdown = false;
             Console.CursorVisible = false;
-            MainMenuCursor = new ConsoleCursor(0, 3);
-            menuOptions = new List<MenuOption>()
+
+            MenuCursor = new ConsoleCursor(0, 3);
+            MenuOptions = new List<MenuOption>()
             {
                 new MenuOption("Practice addition", 0),
                 new MenuOption("Practice subtraction", 1),
@@ -39,7 +37,7 @@ namespace ConsoleImplementation.Models
         }
         private void Start()
         {
-            while (!shutDown)
+            while (!shutdown)
             {
                 Display();
                 WaitForInput();
@@ -53,18 +51,18 @@ namespace ConsoleImplementation.Models
             switch (press.Key)
             {
                 case ConsoleKey.UpArrow:
-                    MainMenuCursor.MoveCursor(CursorMovementDirection.Up);
+                    MenuCursor.MoveCursor(CursorMovementDirection.Up);
                     break;
                 case ConsoleKey.DownArrow:
-                    MainMenuCursor.MoveCursor(CursorMovementDirection.Down);
+                    MenuCursor.MoveCursor(CursorMovementDirection.Down);
                     break;
             }
         }
         private void Display()
         {
-            if (reDisplay)
+            if (redisplayMenu)
                 DisplayFrame();
-            if (MainMenuCursor.CursorRefresh)
+            if (MenuCursor.CursorRefresh)
                 DisplayOptions();
         }
 
@@ -77,20 +75,15 @@ namespace ConsoleImplementation.Models
             Console.SetCursorPosition(0, 4);
             ConsoleHelper.FillALine("=", ConsoleColor.Cyan, 1);
 
-            reDisplay = false;
+            redisplayMenu = false;
         }
         private void DisplayOptions()
         {
-            for(int i = 0; i < menuOptions.Count; i++)
+            for(int i = 0; i < MenuOptions.Count; i++)
             {
-                menuOptions[i].WriteInCenter(MainMenuCursor.TopIndex, (i * 2) + 6);
+                MenuOptions[i].WriteInCenter(MenuCursor.TopIndex, (i * 2) + 6);
             }
-            MainMenuCursor.SetCursorRefresh(false);
-
-            /*ConsoleHelper.WriteInCenter("Practice addition", ConsoleColor.Gray, 6);
-            ConsoleHelper.WriteInCenter("Practice subtraction", ConsoleColor.Gray, 8);
-            ConsoleHelper.WriteInCenter("Practice multiplication", ConsoleColor.Gray, 10);
-            ConsoleHelper.WriteInCenter("Practice division", ConsoleColor.Gray, 12);*/
+            MenuCursor.SetCursorRefresh(false);
         }
     }
 }
