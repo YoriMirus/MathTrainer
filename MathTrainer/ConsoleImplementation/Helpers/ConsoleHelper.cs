@@ -3,6 +3,9 @@ using System.Text;
 
 namespace ConsoleImplementation.Helpers
 {
+    /// <summary>
+    /// Contains methods to make creating menus easier
+    /// </summary>
     static class ConsoleHelper
     {
         #region WriteLine methods
@@ -56,21 +59,28 @@ namespace ConsoleImplementation.Helpers
         #endregion
         #region FillALine methods
 
-        public static void FillALine(string text) => FillALine(text, Console.ForegroundColor, 0, 0);
+        /// <summary>
+        /// Fills one line with text
+        /// </summary>
+        /// <param name="text"></param>
+        public static void FillALine(string text) => FillALine(text, 0, 0, Console.ForegroundColor);
+
         /// <summary>
         /// Fills one line with text.
         /// </summary>
         /// <param name="text"></param>
         /// <param name="fontColor"></param>
-        public static void FillALine(string text, ConsoleColor fontColor) => FillALine(text, fontColor, 0, 0);
+        public static void FillALine(string text, ConsoleColor fontColor = ConsoleColor.Gray) => FillALine(text, 0, 0, fontColor);
+
         /// <summary>
         /// Fills one line with text.
         /// </summary>
         /// <param name="text"></param>
         /// <param name="fontColor"></param>
         /// <param name="margin">How many spaces to leave out on the right and left side of the line</param>
-        public static void FillALine(string text, ConsoleColor fontColor, int margin)
-            => FillALine(text, fontColor, margin, margin);
+        public static void FillALine(string text, int margin, ConsoleColor fontColor = ConsoleColor.Gray)
+            => FillALine(text, margin, margin, fontColor);
+
         /// <summary>
         /// Fills one line with text.
         /// </summary>
@@ -78,7 +88,7 @@ namespace ConsoleImplementation.Helpers
         /// <param name="fontColor"></param>
         /// <param name="leftMargin">How many spaces to leave on the left side of the line.</param>
         /// <param name="rightMargin">How many spaces to leave on the right side of the line.</param>
-        public static void FillALine(string text, ConsoleColor fontColor, int leftMargin, int rightMargin)
+        public static void FillALine(string text, int leftMargin, int rightMargin, ConsoleColor fontColor = ConsoleColor.Gray)
         {
             ConsoleColor previousColor = Console.ForegroundColor;
             StringBuilder textToDisplay = new StringBuilder();
@@ -101,31 +111,34 @@ namespace ConsoleImplementation.Helpers
         #endregion
         #region MakeEdges methods
 
-        public static void MakeEdges(string text) => MakeEdges(text, Console.ForegroundColor);
+        /// <summary>
+        /// Writes text into the edges of the console and jumps to the next line.
+        /// </summary>
+        /// <param name="text"></param>
+        /// <exception cref="ArgumentOutOfRangeException"></exception>
+        public static void MakeEdges(string text, ConsoleColor fontColor = ConsoleColor.Gray) => MakeEdges(text, text, fontColor);
         /// <summary>
         /// Writes text into the edges of the console and jumps to the next line.
         /// </summary>
         /// <param name="text"></param>
         /// <param name="fontColor"></param>
         /// <exception cref="ArgumentOutOfRangeException"></exception>
-        public static void MakeEdges(string text, ConsoleColor fontColor)
+        public static void MakeEdges(string leftEdge, string rightEdge, ConsoleColor fontColor = ConsoleColor.Gray)
         {
             ConsoleColor previousColor = Console.ForegroundColor;
 
-            if (text.Length * 2 > Console.WindowWidth)
+            if (leftEdge.Length + rightEdge.Length > Console.WindowWidth)
                 throw new ArgumentOutOfRangeException("text", "Text is too large to fit inside the line.");
 
             Console.ForegroundColor = fontColor;
             Console.SetCursorPosition(0, Console.CursorTop);
-            Console.Write(text);
+            Console.Write(leftEdge);
 
-            Console.SetCursorPosition(Console.WindowWidth - text.Length, Console.CursorTop);
+            Console.SetCursorPosition(Console.WindowWidth - rightEdge.Length, Console.CursorTop);
 
-            Console.WriteLine(text);
+            Console.WriteLine(rightEdge);
             Console.ForegroundColor = previousColor;
         }
-
-
 
         #endregion
         #region MakeFrame methods

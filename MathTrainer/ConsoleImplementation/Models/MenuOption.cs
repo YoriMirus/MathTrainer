@@ -6,6 +6,9 @@ using ConsoleImplementation.Helpers;
 
 namespace ConsoleImplementation.Models
 {
+    /// <summary>
+    /// Class for making selections in the menu that you navigate using arrow keys
+    /// </summary>
     struct MenuOption
     {
         /// <summary>
@@ -26,15 +29,20 @@ namespace ConsoleImplementation.Models
         public ConsoleColor NotSelectedFG { get; private set; }
         
         /// <summary>
-        /// Cursor index for the option to be selected
+        /// CursorTop index for the option to be selected
         /// </summary>
-        public int SelectIndex { get; private set; }
+        public int SelectTopIndex  { get; private set; }
+        /// <summary>
+        /// CursorLeft index for the option to be selected
+        /// </summary>
+        public int SelectLeftIndex { get; private set; }
+
         /// <summary>
         /// Text to display.
         /// </summary>
-        public string Text     { get; private set; }
+        public string Text { get; private set; }
 
-        public MenuOption(string text, int selectIndex, ConsoleColor selectedBG = ConsoleColor.Blue, ConsoleColor notSelectedBG = ConsoleColor.Black, ConsoleColor selectedFG = ConsoleColor.Gray , ConsoleColor notSelectedFG = ConsoleColor.Gray)
+        public MenuOption(string text, int selectTopIndex, int selectLeftIndex = 0, ConsoleColor selectedBG = ConsoleColor.Blue, ConsoleColor notSelectedBG = ConsoleColor.Black, ConsoleColor selectedFG = ConsoleColor.Gray , ConsoleColor notSelectedFG = ConsoleColor.Gray)
         {
             SelectedBG = selectedBG;
             SelectedFG = selectedFG;
@@ -42,15 +50,16 @@ namespace ConsoleImplementation.Models
             NotSelectedBG = notSelectedBG;
             NotSelectedFG = notSelectedFG;
 
-            SelectIndex = selectIndex;
+            SelectTopIndex = selectTopIndex;
+            SelectLeftIndex = selectLeftIndex;
             Text = text;
         }
 
-        public void WriteInCenter(int cursorIndex, int cursorTop)
+        public void WriteInCenter(int cursorLeftIndex, int cursorTopIndex, int cursorTop)
         {
             ConsoleColor prevBG = Console.BackgroundColor;
 
-            if(cursorIndex == SelectIndex)
+            if(cursorLeftIndex == SelectLeftIndex && cursorTopIndex == SelectTopIndex)
             {
                 Console.BackgroundColor = SelectedBG;
                 ConsoleHelper.WriteInCenter(Text, SelectedFG, cursorTop);

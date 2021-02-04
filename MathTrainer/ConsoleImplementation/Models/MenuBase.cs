@@ -14,5 +14,17 @@ namespace ConsoleImplementation.Models
 
         public int WindowWidth { get; protected set; }
         public int WindowHeight { get; protected set; }
+
+        protected abstract void Display();
+        protected abstract void DisplayFrame();
+        protected abstract void DisplaySelection();
+
+        /// <summary>
+        /// Sets the window size of the console to the menu window size.
+        /// </summary>
+        protected void SetWindowSize()
+        {
+            Console.SetWindowSize(WindowWidth , WindowHeight);
+        }
     }
 }

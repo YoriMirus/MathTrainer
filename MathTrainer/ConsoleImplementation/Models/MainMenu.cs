@@ -10,15 +10,11 @@ namespace ConsoleImplementation.Models
 {
     class MainMenu: MenuBase
     {
-        /// <summary>
-        /// Whether to completely redisplay the menu.
-        /// </summary>
-
         public MainMenu()
         {
             WindowWidth = 40;
             WindowHeight = 20;
-            Console.SetWindowSize(WindowWidth, WindowHeight);
+            SetWindowSize();
 
             redisplayMenu = true;
             shutdown = false;
@@ -58,30 +54,42 @@ namespace ConsoleImplementation.Models
                     break;
             }
         }
-        private void Display()
+
+        protected override void Display()
         {
             if (redisplayMenu)
                 DisplayFrame();
             if (MenuCursor.CursorRefresh)
-                DisplayOptions();
+                DisplaySelection();
         }
 
-        private void DisplayFrame()
+        protected override void DisplayFrame()
         {
-            Console.Clear();
+            Rectangle r = new Rectangle(WindowWidth, WindowHeight);
+            r.Display(0, 0);
+
+            Console.SetCursorPosition(0, 4);
+            ConsoleHelper.MakeEdges("┣", "┫");
+            Console.SetCursorPosition(0, 4);
+            ConsoleHelper.FillALine("━", 1);
+
+            Console.SetCursorPosition(0, 2);
+            ConsoleHelper.WriteInCenter("Math trainer");
+
+            /*Console.Clear();
             ConsoleHelper.MakeFrame('|', '=', ConsoleColor.Cyan);
             ConsoleHelper.WriteInCenter("Math trainer", ConsoleColor.Red, 2);
 
             Console.SetCursorPosition(0, 4);
-            ConsoleHelper.FillALine("=", ConsoleColor.Cyan, 1);
+            ConsoleHelper.FillALine("=", ConsoleColor.Cyan, 1);*/
 
             redisplayMenu = false;
         }
-        private void DisplayOptions()
+        protected override void DisplaySelection()
         {
             for(int i = 0; i < MenuOptions.Count; i++)
             {
-                MenuOptions[i].WriteInCenter(MenuCursor.TopIndex, (i * 2) + 6);
+                MenuOptions[i].WriteInCenter(MenuCursor.LeftIndex, MenuCursor.TopIndex, (i * 2) + 6);
             }
             MenuCursor.SetCursorRefresh(false);
         }
