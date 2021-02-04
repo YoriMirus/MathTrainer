@@ -62,7 +62,6 @@ namespace ConsoleImplementation.Models
             if (MenuCursor.CursorRefresh)
                 DisplaySelection();
         }
-
         protected override void DisplayFrame()
         {
             Rectangle r = new Rectangle(WindowWidth, WindowHeight);
@@ -75,13 +74,6 @@ namespace ConsoleImplementation.Models
 
             Console.SetCursorPosition(0, 2);
             ConsoleHelper.WriteInCenter("Math trainer");
-
-            /*Console.Clear();
-            ConsoleHelper.MakeFrame('|', '=', ConsoleColor.Cyan);
-            ConsoleHelper.WriteInCenter("Math trainer", ConsoleColor.Red, 2);
-
-            Console.SetCursorPosition(0, 4);
-            ConsoleHelper.FillALine("=", ConsoleColor.Cyan, 1);*/
 
             redisplayMenu = false;
         }

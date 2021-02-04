@@ -7,7 +7,7 @@ using ConsoleImplementation.Helpers;
 namespace ConsoleImplementation.Models
 {
     /// <summary>
-    /// Class for making selections in the menu that you navigate using arrow keys
+    /// Class for making selections in the menu.
     /// </summary>
     struct MenuOption
     {
