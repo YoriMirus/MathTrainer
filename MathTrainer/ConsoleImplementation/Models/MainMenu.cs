@@ -93,6 +93,11 @@ namespace ConsoleImplementation.Models
             WindowWidth = Console.WindowWidth;
             WindowHeight = Console.WindowHeight;
 
+            //Fix buffer issues
+            Console.SetWindowSize(1, 1);
+            Console.SetBufferSize(WindowWidth, WindowHeight);
+            Console.SetWindowSize(WindowWidth, WindowHeight);
+
             if (prevWidth != WindowWidth || prevHeight != WindowHeight)
             {
                 Console.Clear();

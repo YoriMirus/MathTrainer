@@ -10,6 +10,8 @@ namespace ConsoleImplementation
         {
             Console.InputEncoding = Encoding.Unicode;
             Console.OutputEncoding = Encoding.Unicode;
+            Console.ForegroundColor = ConsoleColor.Gray;
+            Console.BackgroundColor = ConsoleColor.Black;
 
             new MainMenu();
         }
