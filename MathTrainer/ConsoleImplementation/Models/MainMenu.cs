@@ -59,7 +59,7 @@ namespace ConsoleImplementation.Models
             {
                 while(Console.KeyAvailable == false)
                 {
-                    Thread.Sleep(200);
+                    Thread.Sleep(50);
                     WindowWidth = Console.WindowWidth;
                     WindowHeight = Console.WindowHeight;
 
@@ -92,11 +92,7 @@ namespace ConsoleImplementation.Models
         {
             WindowWidth = Console.WindowWidth;
             WindowHeight = Console.WindowHeight;
-
-            //Fix buffer issues
-            Console.SetWindowSize(1, 1);
-            Console.SetBufferSize(WindowWidth, WindowHeight);
-            Console.SetWindowSize(WindowWidth, WindowHeight);
+            Console.SetBufferSize(Console.WindowWidth, Console.WindowHeight);
 
             if (prevWidth != WindowWidth || prevHeight != WindowHeight)
             {
@@ -123,13 +119,13 @@ namespace ConsoleImplementation.Models
         }
         protected override void DisplayFrame()
         {
-            Rectangle r = new Rectangle(WindowWidth, WindowHeight);
+            Rectangle r = new Rectangle(WindowWidth - 1, WindowHeight - 1);
             r.Display(0, 0);
 
             Console.SetCursorPosition(0, 4);
-            ConsoleHelper.MakeEdges("┣", "┫");
+            ConsoleHelper.MakeEdges("┣", "┫", 0, 1);
             Console.SetCursorPosition(0, 4);
-            ConsoleHelper.FillALine("━", 1);
+            ConsoleHelper.FillALine("━", 1, 2);
 
             Console.SetCursorPosition(0, 2);
             ConsoleHelper.WriteInCenter("Math trainer");

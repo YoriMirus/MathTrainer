@@ -116,14 +116,21 @@ namespace ConsoleImplementation.Helpers
         /// </summary>
         /// <param name="text"></param>
         /// <exception cref="ArgumentOutOfRangeException"></exception>
-        public static void MakeEdges(string text, ConsoleColor fontColor = ConsoleColor.Gray) => MakeEdges(text, text, fontColor);
+        public static void MakeEdges(string text, ConsoleColor fontColor = ConsoleColor.Gray) => MakeEdges(text, text, 0, 0, fontColor);
+        /// <summary>
+        /// Writes text into the edges of the console and jumps to the next line.
+        /// </summary>
+        /// <param name="leftEdge"></param>
+        /// <param name="rightEdge"></param>
+        /// <param name="margin"></param>
+        public static void MakeEdges(string leftEdge, string rightEdge, int margin) => MakeEdges(leftEdge, rightEdge, margin, margin);
         /// <summary>
         /// Writes text into the edges of the console and jumps to the next line.
         /// </summary>
         /// <param name="text"></param>
         /// <param name="fontColor"></param>
         /// <exception cref="ArgumentOutOfRangeException"></exception>
-        public static void MakeEdges(string leftEdge, string rightEdge, ConsoleColor fontColor = ConsoleColor.Gray)
+        public static void MakeEdges(string leftEdge, string rightEdge, int leftMargin, int rightMargin, ConsoleColor fontColor = ConsoleColor.Gray)
         {
             ConsoleColor previousColor = Console.ForegroundColor;
 
@@ -131,10 +138,10 @@ namespace ConsoleImplementation.Helpers
                 throw new ArgumentOutOfRangeException("text", "Text is too large to fit inside the line.");
 
             Console.ForegroundColor = fontColor;
-            Console.SetCursorPosition(0, Console.CursorTop);
+            Console.SetCursorPosition(leftMargin, Console.CursorTop);
             Console.Write(leftEdge);
 
-            Console.SetCursorPosition(Console.WindowWidth - rightEdge.Length, Console.CursorTop);
+            Console.SetCursorPosition(Console.WindowWidth - rightEdge.Length - rightMargin, Console.CursorTop);
 
             Console.WriteLine(rightEdge);
             Console.ForegroundColor = previousColor;
