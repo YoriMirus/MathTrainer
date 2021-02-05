@@ -10,10 +10,17 @@ namespace ConsoleImplementation.Models
 {
     class MainMenu: MenuBase
     {
+        private int prevHeight;
+        private int prevWidth;
+
         public MainMenu()
         {
             WindowWidth = 40;
             WindowHeight = 20;
+
+            prevHeight = WindowHeight;
+            prevWidth = WindowWidth;
+
             SetWindowSize();
 
             redisplayMenu = true;
@@ -57,6 +64,18 @@ namespace ConsoleImplementation.Models
 
         protected override void Display()
         {
+            WindowWidth = Console.WindowWidth;
+            WindowHeight = Console.WindowHeight;
+
+            if (prevWidth != WindowWidth || prevHeight != WindowHeight)
+            {
+                Console.Clear();
+                prevHeight = WindowHeight;
+                prevWidth = WindowWidth;
+
+                redisplayMenu = true;
+            }
+
             if (redisplayMenu)
                 DisplayFrame();
             if (MenuCursor.CursorRefresh)
