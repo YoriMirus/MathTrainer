@@ -108,10 +108,18 @@ namespace ConsoleImplementation.Models
                 MenuCursor.CursorRefresh = true;
             }
 
-            if (redisplayMenu)
-                DisplayFrame();
-            if (MenuCursor.CursorRefresh)
-                DisplaySelection();
+            try
+            {
+                if (redisplayMenu)
+                    DisplayFrame();
+                if (MenuCursor.CursorRefresh)
+                    DisplaySelection();
+            }
+            catch
+            {
+                Console.BackgroundColor = ConsoleColor.Black;
+                Console.ForegroundColor = ConsoleColor.Gray;
+            }
         }
         protected override void DisplayFrame()
         {
