@@ -1,17 +1,18 @@
 ﻿using System;
 using System.Threading;
 using System.Collections.Generic;
-using System.Text;
-
 using ConsoleImplementation.Helpers;
 using ConsoleImplementation.Enums;
 
 namespace ConsoleImplementation.Models
 {
-    class MainMenu: MenuBase
+    class MainMenu : MenuBase
     {
+        ResizeListener resizeListener = new ResizeListener();
+
         private int prevHeight;
         private int prevWidth;
+        private Thread resizeListenerThread;
 
         public MainMenu()
         {
@@ -36,9 +37,12 @@ namespace ConsoleImplementation.Models
                 new MenuOption("Practice division", 3)
             };
 
+            //resizeListenerThread = new Thread(new ParameterizedThreadStart(resizeListener.WasResized));
+            //resizeListenerThread.Start(this);
+
             Start();
         }
-        private void Start()
+        public override void Start()
         {
             while (!shutdown)
             {
@@ -49,9 +53,31 @@ namespace ConsoleImplementation.Models
 
         private void WaitForInput()
         {
-            ConsoleKeyInfo press = Console.ReadKey();
+            ConsoleKeyInfo cki;
 
-            switch (press.Key)
+            do
+            {
+                while(Console.KeyAvailable == false)
+                {
+                    Thread.Sleep(200);
+                    WindowWidth = Console.WindowWidth;
+                    WindowHeight = Console.WindowHeight;
+
+                    if (prevWidth != WindowWidth || prevHeight != WindowHeight)
+                    {
+                        Console.Clear();
+                        prevHeight = WindowHeight;
+                        prevWidth = WindowWidth;
+
+                        redisplayMenu = true;
+                        MenuCursor.CursorRefresh = true;
+                        Display();
+                    }
+                }
+                cki = Console.ReadKey(true);
+            } while (cki.Key != ConsoleKey.UpArrow && cki.Key != ConsoleKey.DownArrow);
+
+            switch (cki.Key)
             {
                 case ConsoleKey.UpArrow:
                     MenuCursor.MoveCursor(CursorMovementDirection.Up);
@@ -62,7 +88,7 @@ namespace ConsoleImplementation.Models
             }
         }
 
-        protected override void Display()
+        public override void Display()
         {
             WindowWidth = Console.WindowWidth;
             WindowHeight = Console.WindowHeight;
@@ -74,12 +100,13 @@ namespace ConsoleImplementation.Models
                 prevWidth = WindowWidth;
 
                 redisplayMenu = true;
+                MenuCursor.CursorRefresh = true;
             }
 
-            if (redisplayMenu)
-                DisplayFrame();
             if (MenuCursor.CursorRefresh)
                 DisplaySelection();
+            if (redisplayMenu)
+                DisplayFrame();
         }
         protected override void DisplayFrame()
         {

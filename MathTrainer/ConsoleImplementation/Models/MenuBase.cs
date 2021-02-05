@@ -12,10 +12,11 @@ namespace ConsoleImplementation.Models
         protected bool redisplayMenu;
         protected bool shutdown;
 
-        public int WindowWidth { get; protected set; }
-        public int WindowHeight { get; protected set; }
+        public int WindowWidth { get; set; }
+        public int WindowHeight { get; set; }
 
-        protected abstract void Display();
+        public abstract void Start();
+        public abstract void Display();
         protected abstract void DisplayFrame();
         protected abstract void DisplaySelection();
 

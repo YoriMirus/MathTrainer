@@ -16,7 +16,7 @@ namespace ConsoleImplementation.Models
         /// CursorLeft index of the cursor, starts from 0.
         /// </summary>
         public int  LeftIndex { get; private set; }
-        public bool CursorRefresh { get; private set; }
+        public bool CursorRefresh { get; set; }
         public int MaximumLeft { get; private set; }
         public int MaximumTop { get; private set; }
 
