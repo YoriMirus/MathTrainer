@@ -12,7 +12,7 @@ namespace ConsoleImplementation.Models
 
         private int prevHeight;
         private int prevWidth;
-        private Thread resizeListenerThread;
+        //private Thread resizeListenerThread;
 
         public MainMenu()
         {
@@ -71,7 +71,7 @@ namespace ConsoleImplementation.Models
 
                         redisplayMenu = true;
                         MenuCursor.CursorRefresh = true;
-                        Display();
+                        Start();
                     }
                 }
                 cki = Console.ReadKey(true);
@@ -103,10 +103,10 @@ namespace ConsoleImplementation.Models
                 MenuCursor.CursorRefresh = true;
             }
 
-            if (MenuCursor.CursorRefresh)
-                DisplaySelection();
             if (redisplayMenu)
                 DisplayFrame();
+            if (MenuCursor.CursorRefresh)
+                DisplaySelection();
         }
         protected override void DisplayFrame()
         {

@@ -1,7 +1,5 @@
 ﻿using System;
 using System.Text;
-
-using ConsoleImplementation.Helpers;
 using ConsoleImplementation.Models;
 
 namespace ConsoleImplementation
